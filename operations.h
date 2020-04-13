@@ -1,6 +1,6 @@
 struct Matrix
 {
-    int **matrix;
+    float **matrix;
     int rows, cols;
 };
 

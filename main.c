@@ -12,7 +12,8 @@ TODO:
 create an Array (10 max?) for maximum amount of M pointers
 Add an 'active' flag to the matrix struct
 create an interactive menu
-implement more operations
+implement inverse function
+
 
 */
 

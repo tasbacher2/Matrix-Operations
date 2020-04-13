@@ -29,9 +29,9 @@ void getMatrix(struct Matrix *m)
     }
 
     // Allocate memory for matrix
-    m->matrix = malloc(m->rows*sizeof(int*));
+    m->matrix = malloc(m->rows*sizeof(float*));
     for (int i = 0; i < m->rows; i++){
-        m->matrix[i] = malloc(m->cols*sizeof(int));
+        m->matrix[i] = malloc(m->cols*sizeof(float));
     } 
 
     // Build matrix with input from user
@@ -41,7 +41,7 @@ void getMatrix(struct Matrix *m)
             valid = 0;
             printf("Enter value for cell %d, %d: ", i, j);
             while (valid == 0){
-                valid = scanf("%d", &m->matrix[i][j]);
+                valid = scanf("%f", &m->matrix[i][j]);
                 if (valid == 0){
                     printf("Incorrect input, please enter a number: ");
                     fflush(stdin);
@@ -62,14 +62,14 @@ void freeMatrix(struct Matrix *m){
 void display(struct Matrix *m){
     for (int i=0; i<m->rows; i++){
         for (int j=0; j<m->cols; j++){
-            printf("%d\t", m->matrix[i][j]);
+            printf("%.2f\t", m->matrix[i][j]);
         }
         printf("\n");
     }
 }
 
 void sumrows(struct Matrix *m){
-    int sum;
+    float sum;
     for (int i=0; i<m->rows; i++){
         sum = 0;
         for (int j=0; j<m->cols; j++){
@@ -80,7 +80,7 @@ void sumrows(struct Matrix *m){
 }
 
 void sumcolumns(struct Matrix *m){
-    int sum;
+    float sum;
     for (int i=0; i<m->cols; i++){
         sum = 0;
         for (int j=0; j<m->rows; j++){
@@ -170,15 +170,15 @@ void getDifference(struct Matrix *m1, struct Matrix *m2, struct Matrix *m3){
 }
 
 void getProduct(struct Matrix *m1, struct Matrix *m2, struct Matrix *m3){
-    int sum;
+    float sum;
 
     if (m1->cols == m2->rows){
         m3->rows = m1->rows;
         m3->cols = m2->cols;
 
-        m3->matrix = malloc(m3->rows*sizeof(int*));
+        m3->matrix = malloc(m3->rows*sizeof(float*));
         for (int i = 0; i < m3->rows; i++){
-            m3->matrix[i] = malloc(m3->cols*sizeof(int));
+            m3->matrix[i] = malloc(m3->cols*sizeof(float));
         } 
 
         for (int i=0; i<m3->rows; i++){
