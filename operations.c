@@ -168,3 +168,31 @@ void getDifference(struct Matrix *m1, struct Matrix *m2, struct Matrix *m3){
         printf("Please try again with two matricies that are the same size.\n");
     }
 }
+
+void getProduct(struct Matrix *m1, struct Matrix *m2, struct Matrix *m3){
+    int sum;
+
+    if (m1->cols == m2->rows){
+        m3->rows = m1->rows;
+        m3->cols = m2->cols;
+
+        m3->matrix = malloc(m3->rows*sizeof(int*));
+        for (int i = 0; i < m3->rows; i++){
+            m3->matrix[i] = malloc(m3->cols*sizeof(int));
+        } 
+
+        for (int i=0; i<m3->rows; i++){
+            for (int j=0; j<m3->cols; j++){
+                sum = 0;
+                for (int o=0; o<m1->cols; o++){
+                    sum += m1->matrix[i][o] * m2->matrix[o][j];
+                }
+                m3->matrix[i][j] = sum;
+            }
+        }
+    }
+    else{
+        printf("Error, Amount of columns of the first matrix must equal the amount of rows in the second matrix.\n");
+        printf("Please try again with correct dimensions for multiplication.\n");
+    }
+}
