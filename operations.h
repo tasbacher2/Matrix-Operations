@@ -1,7 +1,10 @@
+#include <stdbool.h> 
+
 struct Matrix
 {
     float **matrix;
     int rows, cols;
+    bool active;
 };
 
 void getMatrix(struct Matrix *m);

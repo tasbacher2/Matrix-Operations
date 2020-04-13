@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "operations.h"
 
 void getMatrix(struct Matrix *m)
