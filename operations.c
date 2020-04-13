@@ -51,6 +51,14 @@ void getMatrix(struct Matrix *m)
     }
 }
 
+void freeMatrix(struct Matrix *m){
+    for (int i = 0; i < m->rows; i++){
+        free(m->matrix[i]);
+    } 
+    free(m->matrix);
+}
+
+
 void display(struct Matrix *m){
     for (int i=0; i<m->rows; i++){
         for (int j=0; j<m->cols; j++){
@@ -112,5 +120,51 @@ void getTranspose(struct Matrix *m1, struct Matrix *m2){
         for (int j=0; j<m1->cols; j++){
             m2->matrix[j][i] = m1->matrix[i][j];
         }
+    }
+}
+
+void getSum(struct Matrix *m1, struct Matrix *m2, struct Matrix *m3){
+
+    if (m1->rows == m2->rows && m1->cols == m2->cols){
+        m3->rows = m1->rows;
+        m3->cols = m1->cols;
+
+        m3->matrix = malloc(m3->rows*sizeof(int*));
+        for (int i = 0; i < m3->rows; i++){
+            m3->matrix[i] = malloc(m3->cols*sizeof(int));
+        } 
+
+        for (int i=0; i<m3->rows; i++){
+            for (int j=0; j<m3->cols; j++){
+                m3->matrix[i][j] = m1->matrix[i][j] + m2->matrix[i][j];
+            }
+        }
+    }
+    else{
+        printf("Error, Matrix dimensions must match for addition.\n");
+        printf("Please try again with two matricies that are the same size.\n");
+    }
+}
+
+void getDifference(struct Matrix *m1, struct Matrix *m2, struct Matrix *m3){
+
+    if (m1->rows == m2->rows && m1->cols == m2->cols){
+        m3->rows = m1->rows;
+        m3->cols = m1->cols;
+
+        m3->matrix = malloc(m3->rows*sizeof(int*));
+        for (int i = 0; i < m3->rows; i++){
+            m3->matrix[i] = malloc(m3->cols*sizeof(int));
+        } 
+
+        for (int i=0; i<m3->rows; i++){
+            for (int j=0; j<m3->cols; j++){
+                m3->matrix[i][j] = m1->matrix[i][j] - m2->matrix[i][j];
+            }
+        }
+    }
+    else{
+        printf("Error, Matrix dimensions must match for for subtraction.\n");
+        printf("Please try again with two matricies that are the same size.\n");
     }
 }
