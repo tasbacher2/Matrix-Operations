@@ -26,7 +26,7 @@ implement inverse function
 int main(){
 
     struct Matrix m[10];
-    int selection = 0, valid = 0, counter = 0, index = -1, displayOption = -1;
+    int selection = 0, valid = 0, counter = 0, index = -1, option = -1;
     char c;
 
     for (int i = 0; i < 10; i++){
@@ -80,23 +80,46 @@ int main(){
         }
         else if (selection == 2){
             printf("\nYou've selected delete.\n\n");
-            printf("Error 404 no functionality found.\n\n");
+            printf("Which matrix number would you like to delete 1-10 (Enter 0 to return to menu): ");
+            while (option < 0 || option > 10){
+                valid = scanf("%d", &option);
+                if (option < 0 || option > 10 || valid == 0){
+                    printf("Incorrect input, please select a matrix to delete (or select 0 to go back to menu): ");
+                }
+                fflush(stdin);
+            }
+            if (option != 0){
+                printf("Are you sure you want to delete Matrix %d? Y|N: ", option);
+                while (toupper(c) != 'Y' && toupper(c) != 'N'){
+                    scanf("%c", &c);
+                    if (toupper(c) != 'Y' && toupper(c) != 'N'){
+                        printf("Incorrect input, please enter a valid option (Y|N): ");
+                        fflush(stdin);
+                    }
+                    else{
+                        if (toupper(c) == 'Y'){
+                            m[option-1].active = 0;
+                            freeMatrix(&m[option-1]);
+                        }
+                    }
+                }
+            }
+            option = -1;
             printf("Press Enter to return to menu...");
             scanf("%c", &c);
         }
         else if (selection == 3){
             fflush(stdin);
             printf("\nYou've selected display.\n\n");
-            //printf("Error 404 no functionality found.\n\n");
             printf("Which matrix number would you like to display 1-10 (Enter 0 to display all): ");
-            while (displayOption < 0 || displayOption > 10){
-                valid = scanf("%d", &displayOption);
-                if (displayOption < 0 || displayOption > 10 || valid == 0){
-                    printf("Incorrect input, please enter the number of rows (max 20): ");
+            while (option < 0 || option > 10){
+                valid = scanf("%d", &option);
+                if (option < 0 || option > 10 || valid == 0){
+                    printf("Incorrect input, please select a matrix (1-10): ");
                 }
                 fflush(stdin);
             }
-            if (displayOption == 0){
+            if (option == 0){
                 for (int i = 0; i < 10; i++){
                     if (m[i].active == 1){
                         printf("Matrix %d: \n", i + 1);
@@ -105,15 +128,15 @@ int main(){
                 }
             }
             else{
-                if (m[displayOption - 1].active == 1) {
-                    printf("Matrix %d: \n", displayOption);
-                    display(&m[displayOption - 1]);
+                if (m[option - 1].active == 1) {
+                    printf("Matrix %d: \n", option);
+                    display(&m[option - 1]);
                 }
                 else{
-                    printf("Matrix %d does not exist.\n", displayOption);
+                    printf("Matrix %d does not exist yet.\n", option);
                 }
             }
-            displayOption = -1;
+            option = -1;
             printf("Press Enter to return to menu...");
             scanf("%c", &c);
         }
@@ -170,37 +193,6 @@ int main(){
             freeMatrix(&m[i]);
         }
     }
-    //build matrix with input from user
-    //getMatrix(&m1);
-    //getMatrix(&m2);
-
-    //print matrix
-    //display(&m1);
-
-    //find the sum of each row
-    //sumrows(&m1);
-
-    //find the sum of each column
-    //sumcolumns(&m1);
-
-    //find the sum of the main diagonal of a square matrix
-    //sumMainDiagonal(&m1);
-
-    //transpose matrix
-    //getTranspose(&m1, &transpose);
-
-    //display(&transpose);
-
-    //getSum(&m1, &m2, &m3);
-    //getDifference(&m1, &m2, &m3);
-    //getProduct(&m1, &m2, &m3);
-    //display(&m3);
-
-    //freeMatrix(&m1);
-    //freeMatrix(&m2);
-    //freeMatrix(&m3);
-    //freeMatrix(&transpose);
-
     return 0;
 }
 
