@@ -9,6 +9,7 @@ void getMatrix(struct Matrix *m)
 
     m->rows = 0;
     m->cols = 0;
+    m->active = 1;
 
     //get dimensions from user
     //triggers infinite loop if string entered
@@ -67,6 +68,7 @@ void display(struct Matrix *m){
         }
         printf("\n");
     }
+    fflush(stdin);
 }
 
 void sumrows(struct Matrix *m){

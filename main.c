@@ -12,7 +12,6 @@ Description:
 
 TODO:
 create an interactive menu
-    -implement menu item: create
     -implement menu item: display
     -implement menu item: transpose
     -implement menu item: addition
@@ -27,7 +26,7 @@ implement inverse function
 int main(){
 
     struct Matrix m[10];
-    int selection = 0, valid = 0;
+    int selection = 0, valid = 0, counter = 0, index = -1, displayOption = -1;
     char c;
 
     for (int i = 0; i < 10; i++){
@@ -62,7 +61,20 @@ int main(){
 
         if (selection == 1){
             printf("\nYou've selected create.\n\n");
-            printf("Error 404 no functionality found.\n\n");
+            if (counter >= 10){
+                printf("You have too many matricies stored, please delete one before creating another.\n");
+            }
+            else{
+                counter += 1;
+                for (int i = 0; i < 10; i++){
+                    if (m[i].active == 0){
+                        index = i;
+                        break;
+                    }
+                }
+                getMatrix(&m[index]);
+            }
+            fflush(stdin);
             printf("Press Enter to return to menu...");
             scanf("%c", &c);
         }
@@ -73,8 +85,35 @@ int main(){
             scanf("%c", &c);
         }
         else if (selection == 3){
+            fflush(stdin);
             printf("\nYou've selected display.\n\n");
-            printf("Error 404 no functionality found.\n\n");
+            //printf("Error 404 no functionality found.\n\n");
+            printf("Which matrix number would you like to display 1-10 (Enter 0 to display all): ");
+            while (displayOption < 0 || displayOption > 10){
+                valid = scanf("%d", &displayOption);
+                if (displayOption < 0 || displayOption > 10 || valid == 0){
+                    printf("Incorrect input, please enter the number of rows (max 20): ");
+                }
+                fflush(stdin);
+            }
+            if (displayOption == 0){
+                for (int i = 0; i < 10; i++){
+                    if (m[i].active == 1){
+                        printf("Matrix %d: \n", i + 1);
+                        display(&m[i]);
+                    }
+                }
+            }
+            else{
+                if (m[displayOption - 1].active == 1) {
+                    printf("Matrix %d: \n", displayOption);
+                    display(&m[displayOption - 1]);
+                }
+                else{
+                    printf("Matrix %d does not exist.\n", displayOption);
+                }
+            }
+            displayOption = -1;
             printf("Press Enter to return to menu...");
             scanf("%c", &c);
         }
@@ -123,8 +162,14 @@ int main(){
                 }
             }
         }
+        
     }
-    
+    for (int i = 0; i < 10; i++){
+        if (m[i].active == 1){
+            printf("Freeing Matrix %d\n", i + 1);
+            freeMatrix(&m[i]);
+        }
+    }
     //build matrix with input from user
     //getMatrix(&m1);
     //getMatrix(&m2);
