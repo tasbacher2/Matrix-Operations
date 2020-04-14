@@ -11,8 +11,8 @@ Matrix Operations
 Description:
 
 TODO:
+better input validation for matrix data
 create an interactive menu
-    -implement menu item: display
     -implement menu item: transpose
     -implement menu item: addition
     -implement menu item: subtraction
@@ -34,6 +34,7 @@ int main(){
     }
 
     while (selection != 9){
+        fflush(stdin);
         selection = 0;
         valid = 0;
         c = ' ';
@@ -54,7 +55,7 @@ int main(){
         while (selection < 1 || selection > 9){
             valid = scanf("%d", &selection);
             if (selection < 1 || selection > 9 || valid ==0){
-                printf("Invalid selection, please enter an option (1-8): ");
+                printf("Invalid selection, please enter an option (1-9): ");
             }
             fflush(stdin);
         }
@@ -103,13 +104,12 @@ int main(){
                         }
                     }
                 }
+                printf("Press Enter to return to menu...");
+                scanf("%c", &c);
             }
             option = -1;
-            printf("Press Enter to return to menu...");
-            scanf("%c", &c);
         }
         else if (selection == 3){
-            fflush(stdin);
             printf("\nYou've selected display.\n\n");
             printf("Which matrix number would you like to display 1-10 (Enter 0 to display all): ");
             while (option < 0 || option > 10){
@@ -142,7 +142,38 @@ int main(){
         }
         else if (selection == 4){
             printf("\nYou've selected transpose.\n\n");
-            printf("Error 404 no functionality found.\n\n");
+            //printf("Error 404 no functionality found.\n\n");
+            if (counter >= 10){
+                printf("The Transpose function requires an empty matrix slot.\n");
+                printf("You have too many matricies stored, please delete one before creating another.\n");
+            }
+            else{
+                printf("Which matrix number would you like to Transpose 1-10 (Enter 0 to return to menu): ");
+                while (option < 0 || option > 10){
+                    valid = scanf("%d", &option);
+                    if (option < 0 || option > 10 || valid == 0){
+                        printf("Incorrect input, please select a matrix to Transpose (or select 0 to go back to menu): ");
+                    }
+                    fflush(stdin);
+                }
+                if (option != 0){
+                    if (m[option - 1].active){
+                        counter += 1;
+                        for (int i = 0; i < 10; i++){
+                            if (m[i].active == 0){
+                                index = i;
+                                break;
+                            }
+                        }
+                        getTranspose(&m[option-1], &m[index]);
+                        printf("Matrix %d Transpose has been stored in Matrix %d\n", option, index + 1);
+                    }
+                    else{
+                        printf("Matrix %d does not exist yet.\n", option);
+                    }
+                }
+                option = -1;
+            }
             printf("Press Enter to return to menu...");
             scanf("%c", &c);
         }

@@ -64,7 +64,7 @@ void freeMatrix(struct Matrix *m){
 void display(struct Matrix *m){
     for (int i=0; i<m->rows; i++){
         for (int j=0; j<m->cols; j++){
-            printf("%.2f\t", m->matrix[i][j]);
+            printf("%.1f\t", m->matrix[i][j]);
         }
         printf("\n");
     }
@@ -113,6 +113,7 @@ void sumMainDiagonal(struct Matrix *m){
 void getTranspose(struct Matrix *m1, struct Matrix *m2){
     m2->rows = m1->cols;
     m2->cols = m1->rows;
+    m2->active = 1;
 
     m2->matrix = malloc(m2->rows*sizeof(int*));
     for (int i = 0; i < m2->rows; i++){
