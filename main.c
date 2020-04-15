@@ -6,20 +6,13 @@
 
 /* 
 
-Matrix Operations
+Matrix Calculator
 
 Description:
 
 TODO:
-better input validation for matrix data
 create an interactive menu
-    -implement menu item: transpose
-    -implement menu item: addition
-    -implement menu item: subtraction
-    -implement menu item: multiplication
-    -implement menu item: exit
-implement inverse function
-
+    -implement menu item: inverse
 
 */
 

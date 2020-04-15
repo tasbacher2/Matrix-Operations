@@ -7,5 +7,10 @@
 			"name": "matrix",
 			"path": "."
 		}
-	]
+	],
+	"settings": {
+		"files.associations": {
+			"stdio.h": "c"
+		}
+	}
 }

@@ -1,7 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "operations.h"
+
+/* 
+
+Matrix Operations
+
+Description:
+
+TODO:
+better input validation for matrix data
+implement inverse function
+
+*/
 
 void getMatrix(struct Matrix *m)
 {
@@ -202,4 +213,8 @@ void getProduct(struct Matrix *m1, struct Matrix *m2, struct Matrix *m3){
         printf("Error, Amount of columns of the first matrix must equal the amount of rows in the second matrix.\n");
         printf("Please try again with correct dimensions for multiplication.\n");
     }
+}
+
+void getInverse(struct Matrix *m1, struct Matrix *m2){
+    //TODO
 }
