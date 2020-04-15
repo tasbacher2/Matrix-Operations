@@ -132,6 +132,7 @@ void getSum(struct Matrix *m1, struct Matrix *m2, struct Matrix *m3){
     if (m1->rows == m2->rows && m1->cols == m2->cols){
         m3->rows = m1->rows;
         m3->cols = m1->cols;
+        m3->active = 1;
 
         m3->matrix = malloc(m3->rows*sizeof(int*));
         for (int i = 0; i < m3->rows; i++){
@@ -155,6 +156,7 @@ void getDifference(struct Matrix *m1, struct Matrix *m2, struct Matrix *m3){
     if (m1->rows == m2->rows && m1->cols == m2->cols){
         m3->rows = m1->rows;
         m3->cols = m1->cols;
+        m3->active = 1;
 
         m3->matrix = malloc(m3->rows*sizeof(int*));
         for (int i = 0; i < m3->rows; i++){
@@ -179,6 +181,7 @@ void getProduct(struct Matrix *m1, struct Matrix *m2, struct Matrix *m3){
     if (m1->cols == m2->rows){
         m3->rows = m1->rows;
         m3->cols = m2->cols;
+        m3->active = 1;
 
         m3->matrix = malloc(m3->rows*sizeof(float*));
         for (int i = 0; i < m3->rows; i++){
