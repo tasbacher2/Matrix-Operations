@@ -190,7 +190,7 @@ int main(){
                 while (option < 0 || option > 10){
                     valid = scanf("%d", &option);
                     if (option < 0 || option > 10 || valid == 0){
-                        printf("Incorrect input, please select a matrix to Transpose (or select 0 to go back to menu): ");
+                        printf("Incorrect input, please select a matrix for Addition (or select 0 to go back to menu): ");
                     }
                     fflush(stdin);
                 }
@@ -198,20 +198,25 @@ int main(){
                 while (option2 < 0 || option2 > 10){
                     valid = scanf("%d", &option2);
                     if (option2 < 0 || option2 > 10 || valid == 0){
-                        printf("Incorrect input, please select a matrix to Transpose (or select 0 to go back to menu): ");
+                        printf("Incorrect input, please select a matrix for Addition (or select 0 to go back to menu): ");
                     }
                     fflush(stdin);
                 }
                 if (m[option-1].active == 1 && m[option2-1].active == 1){
-                    counter += 1;
-                    for (int i = 0; i < 10; i++){
-                        if (m[i].active == 0){
-                            index = i;
-                            break;
+                    if (m[option-1].rows == m[option2-1].rows && m[option-1].cols == m[option2-1].cols){
+                        counter += 1;
+                        for (int i = 0; i < 10; i++){
+                            if (m[i].active == 0){
+                                index = i;
+                                break;
+                            }
                         }
+                        getSum(&m[option-1], &m[option2-1], &m[index]);
+                        printf("The sum of Matrix %d and Matrix %d has been stored in Matrix %d\n", option, option2, index + 1);
                     }
-                    getSum(&m[option-1], &m[option2-1], &m[index]);
-                    printf("The sum of Matrix %d and Matrix %d has been stored in Matrix %d\n", option, option2, index + 1);
+                    else{
+                        printf("Error, Matrix dimensions must match for addition.\n");
+                    }
                 }
                 else{
                     printf("One of the selected Matricies does not exist.\n");
@@ -225,9 +230,52 @@ int main(){
         }
         else if (selection == 6){
             printf("\nYou've selected subtraction.\n\n");
-            printf("Error 404 no functionality found.\n\n");
+            if (counter >= 10){
+                printf("The Subtraction function requires an empty matrix slot.\n");
+                printf("You have too many matricies stored, please delete one before creating another.\n");
+            }
+            else{
+                printf("Please select the first Matrix to subtract from (1-10) (Enter 0 to return to menu): ");
+                while (option < 0 || option > 10){
+                    valid = scanf("%d", &option);
+                    if (option < 0 || option > 10 || valid == 0){
+                        printf("Incorrect input, please select a matrix for subtraction (or select 0 to go back to menu): ");
+                    }
+                    fflush(stdin);
+                }
+                printf("Please select the second Matrix to subtract (1-10) (Enter 0 to return to menu): ");
+                while (option2 < 0 || option2 > 10){
+                    valid = scanf("%d", &option2);
+                    if (option2 < 0 || option2 > 10 || valid == 0){
+                        printf("Incorrect input, please select a matrix for subtraction (or select 0 to go back to menu): ");
+                    }
+                    fflush(stdin);
+                }
+                if (m[option-1].active == 1 && m[option2-1].active == 1){
+                    if (m[option-1].rows == m[option2-1].rows && m[option-1].cols == m[option2-1].cols){
+                        counter += 1;
+                        for (int i = 0; i < 10; i++){
+                            if (m[i].active == 0){
+                                index = i;
+                                break;
+                            }
+                        }
+                        getDifference(&m[option-1], &m[option2-1], &m[index]);
+                        printf("The difference of Matrix %d and Matrix %d has been stored in Matrix %d\n", option, option2, index + 1);
+                    }
+                    else{
+                        printf("Error, Matrix dimensions must match for subtration.\n");
+                    }
+                }
+                else{
+                    printf("One of the selected Matricies does not exist.\n");
+                    printf("Matrix Subtraction requires two existing matricies.\n");
+                }
+            }
             printf("Press Enter to return to menu...");
             scanf("%c", &c);
+            option = -1;
+            option2 = -1;
         }
         else if (selection == 7){
             printf("\nYou've selected multiplication.\n\n");
