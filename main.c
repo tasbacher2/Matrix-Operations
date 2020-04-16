@@ -20,6 +20,7 @@ int main(){
 
     struct Matrix m[10];
     int selection = 0, valid = 0, counter = 0, index = -1, option = -1, option2 = -1;
+    float matrix[20][20];
     char c;
 
     for (int i = 0; i < 10; i++){
@@ -44,7 +45,7 @@ int main(){
         printf("5. Matrix Addition.\n");
         printf("6. Matrix Subtraction.\n");
         printf("7. Matrix Multiplication.\n");
-        printf("8. Matrix inverse.\n");
+        printf("8. Matrix determinant.\n");
         printf("9. Exit Program.\n");
         printf("Enter Selection: ");
 
@@ -321,8 +322,38 @@ int main(){
             option2 = -1;
         }
         else if (selection == 8){
-            printf("\nYou've selected Inverse.\n");
-            printf("Error 404 no functionality found.\n\n");
+            printf("\nYou've selected Determinant.\n");
+            
+            printf("Which matrix number would you like to find the Determinant of 1-10 (Enter 0 to return to menu): ");
+            while (option < 0 || option > 10){
+                valid = scanf("%d", &option);
+                if (option < 0 || option > 10 || valid == 0){
+                    printf("Incorrect input, please select a matrix to find the Determinant (or select 0 to go back to menu): ");
+                }
+                fflush(stdin);
+            }
+            if (option != 0){
+                if (m[option - 1].active){
+                    if (m->rows == m->cols){
+
+                        for (int i = 0; i < m[option-1].rows; i++){
+                            for (int j = 0; j < m[option-1].rows; j++){
+                                matrix[i][j] = m[option-1].matrix[i][j];
+                            }
+                        }
+                        printf("The Determinant of Matrix %d is: %.1f\n", option, det(matrix, m[option-1].rows));
+                    }
+                    else{
+                        printf("Error, You may only find the Determinant of a square matrix\n");
+                        printf("Amount of columns of the first matrix must equal the amount of rows in the second matrix.\n");
+                    }
+                }
+                else{
+                    printf("Matrix %d does not exist yet.\n", option);
+                }
+            }
+            option = -1;            
+            
             printf("Press Enter to return to menu...");
             scanf("%c", &c);
         }

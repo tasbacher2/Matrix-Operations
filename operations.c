@@ -55,6 +55,7 @@ void getMatrix(struct Matrix *m)
             printf("Enter value for cell %d, %d: ", i, j);
             while (valid == 0){
                 valid = scanf("%f", &m->matrix[i][j]);
+                printf("");
                 if (valid == 0){
                     printf("Incorrect input, please enter a number: ");
                     fflush(stdin);
@@ -213,6 +214,34 @@ void getProduct(struct Matrix *m1, struct Matrix *m2, struct Matrix *m3){
         printf("Error, Amount of columns of the first matrix must equal the amount of rows in the second matrix.\n");
         printf("Please try again with correct dimensions for multiplication.\n");
     }
+}
+
+float det(float m[20][20], int n){
+    float minor[20][20], sign = 1, determinant = 0;
+
+    if (n == 2){
+        determinant = m[0][0] * m[1][1] - m[0][1] * m[1][0];
+    }
+    else{
+        //TODO
+        for (int k = 0; k < n; k++){
+            //This loop tracks a11 to a1k
+            for (int i = 1; i < n; i++){
+                //tracks rows, keep all except for row 1
+                for (int j = 0; j < k; j++){
+                    //all of the columns before k
+                    minor[i - 1][j] = m[i][j];
+                }
+                for (int j = k + 1; j < n; j++){
+                    //all of the columns after k
+                    minor[i - 1][j-1] = m[i][j];
+                }
+            }
+            determinant += sign * m[0][k] * det(minor, n - 1);
+            sign *= -1;
+        }
+    }
+    return determinant;
 }
 
 void getInverse(struct Matrix *m1, struct Matrix *m2){
