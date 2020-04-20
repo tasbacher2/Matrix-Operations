@@ -11,8 +11,7 @@ Matrix Calculator
 Description:
 
 TODO:
-create an interactive menu
-    -implement menu item: inverse
+write a description
 
 */
 
@@ -27,7 +26,7 @@ int main(){
         m[i].active = false;
     }
 
-    while (selection != 9){
+    while (selection != 10){
         fflush(stdin);
         selection = 0;
         valid = 0;
@@ -46,12 +45,13 @@ int main(){
         printf("6. Matrix Subtraction.\n");
         printf("7. Matrix Multiplication.\n");
         printf("8. Matrix determinant.\n");
-        printf("9. Exit Program.\n");
+        printf("9. Matrix Inverse.\n");
+        printf("10. Exit Program.\n");
         printf("Enter Selection: ");
 
-        while (selection < 1 || selection > 9){
+        while (selection < 1 || selection > 10){
             valid = scanf("%d", &selection);
-            if (selection < 1 || selection > 9 || valid ==0){
+            if (selection < 1 || selection > 10 || valid ==0){
                 printf("Invalid selection, please enter an option (1-9): ");
             }
             fflush(stdin);
@@ -354,6 +354,63 @@ int main(){
             }
             option = -1;            
             
+            printf("Press Enter to return to menu...");
+            scanf("%c", &c);
+        }
+        else if (selection == 9){
+            printf("\nYou've selected Inverse.\n");
+            if (counter >= 10){
+                printf("The Inverse function requires an empty matrix slot.\n");
+                printf("You have too many matricies stored, please delete one before creating another.\n");
+            }
+            else{
+                printf("Which matrix number would you like to find the Inverse of 1-10 (Enter 0 to return to menu): ");
+                while (option < 0 || option > 10){
+                    valid = scanf("%d", &option);
+                    if (option < 0 || option > 10 || valid == 0){
+                        printf("Incorrect input, please select a matrix to find the Inverse for (or select 0 to go back to menu): ");
+                    }
+                    fflush(stdin);
+                }
+                if (option != 0){
+                    if (m[option - 1].active){
+                        if (m->rows == m->cols){
+                            
+                            //find the determinant
+                            // Matrix has an inverse iff det(matrix) != 0
+                            for (int i = 0; i < m[option-1].rows; i++){
+                                for (int j = 0; j < m[option-1].rows; j++){
+                                    matrix[i][j] = m[option-1].matrix[i][j];
+                                }
+                            }
+                            if (det(matrix, m[option-1].rows) != 0){
+                                //find matrix to save inverse into
+                                counter += 1;
+                                for (int i = 0; i < 10; i++){
+                                    if (m[i].active == 0){
+                                        index = i;
+                                        break;
+                                    }
+                                }
+                                getInverse(matrix, &m[index], m[option-1].rows);
+                                printf("The inverse of Matrix %d has been stored in Matrix %d.\n", option, index + 1);
+                            }
+                            else{
+                                printf("Error, the Determinant of this matrix is 0.\n");
+                                printf("A matrix has an inverse if and only if the determinant of the matrix is not 0.\n");
+                            }
+                        }
+                        else{
+                            printf("Error, You may only find the Inverse of a square matrix\n");
+                            printf("Amount of columns of the first matrix must equal the amount of rows in the second matrix.\n");
+                        }
+                    }
+                    else{
+                        printf("Matrix %d does not exist yet.\n", option);
+                    }
+                }
+                option = -1;            
+            }
             printf("Press Enter to return to menu...");
             scanf("%c", &c);
         }

@@ -10,7 +10,6 @@ Description:
 
 TODO:
 better input validation for matrix data
-implement inverse function
 
 */
 
@@ -53,10 +52,10 @@ void getMatrix(struct Matrix *m)
         for (int j=0; j<m->cols; j++){
             valid = 0;
             printf("Enter value for cell %d, %d: ", i, j);
-            while (valid == 0){
+            while (m->matrix[i][j] > FLT_MAX || valid == 0){
                 valid = scanf("%f", &m->matrix[i][j]);
                 printf("");
-                if (valid == 0){
+                if (m->matrix[i][j] > FLT_MAX || valid == 0){
                     printf("Incorrect input, please enter a number: ");
                     fflush(stdin);
                 }
@@ -112,11 +111,7 @@ void sumMainDiagonal(struct Matrix *m){
     }
     else{
         for (int i=0; i<m->rows; i++){
-            for (int j=0; j<m->cols; j++){
-                if (i == j){
-                    sum += m->matrix[i][j];
-                }
-            }
+            sum += m->matrix[i][i];
         }
         printf("The sum of the main diagonal of this matrix is: %d\n", sum);
     }
@@ -219,7 +214,10 @@ void getProduct(struct Matrix *m1, struct Matrix *m2, struct Matrix *m3){
 float det(float m[20][20], int n){
     float minor[20][20], sign = 1, determinant = 0;
 
-    if (n == 2){
+    if (n == 1){
+        determinant = m[0][0];
+    }
+    else if (n == 2){
         determinant = m[0][0] * m[1][1] - m[0][1] * m[1][0];
     }
     else{
@@ -244,6 +242,100 @@ float det(float m[20][20], int n){
     return determinant;
 }
 
-void getInverse(struct Matrix *m1, struct Matrix *m2){
-    //TODO
+void getInverse(float matrix[20][20], struct Matrix *m2, int n){
+    // is the dimension of the square matrix
+    float minor[20][20], cofactor[20][20];
+    float determinant = 0, sign = 1, minorDet = 0;
+
+    m2->rows = n;
+    m2->cols = n;
+    m2->active = 1;
+
+    m2->matrix = malloc(m2->rows*sizeof(float*));
+    for (int i = 0; i < m2->rows; i++){
+        m2->matrix[i] = malloc(m2->cols*sizeof(float));
+    } 
+
+    if (n == 1){
+        // 1x1 matrix inverse is the recipricol of the element
+        printf("here %f\n", 1 / matrix[0][0]);
+        m2->matrix[0][0] = 1 / matrix[0][0];
+    }
+    else if (n == 2){
+        // 2x2 Matrix inverse
+        determinant = det(matrix, n);
+        m2->matrix[0][0] = (1 / determinant) * matrix[1][1];
+        m2->matrix[0][1] = -1 * (1 / determinant) * matrix[0][1];
+        m2->matrix[1][0] = -1 * (1 / determinant) * matrix[1][0];
+        m2->matrix[1][1] = (1 / determinant) * matrix[0][0];
+    }
+    else{
+        determinant = det(matrix, n);
+        //TODO NxN
+        //create the matrix of cofactors
+        for (int l = 0; l < n; l++){
+            //current row
+            for (int k = 0; k < n; k++){
+                //current column
+                
+                //for each element [l][k]
+                //create the minor
+                for (int i = 0; i < l; i++){
+                    // all the rows before the current row
+                    for (int j = 0; j < k; j++){
+                        // all of the columns before current column
+                        minor[i][j] = matrix[i][j];
+                    }
+                    for (int j = k + 1; j < n; j++){
+                        //all of the columns after current column
+                        minor[i][j-1] = matrix[i][j];
+                    }
+                }
+                for (int i = l + 1; i < n; i++){
+                    // all the rows after the current row
+                    for (int j = 0; j < k; j++){
+                        // all of the columns before current column
+                        minor[i-1][j] = matrix[i][j];
+                    }
+                    for (int j = k + 1; j < n; j++){
+                        //all of the columns after current column
+                        minor[i-1][j-1] = matrix[i][j];
+                    }
+                }
+                minorDet = det(minor, n-1);
+                if (minorDet == 0){
+                    // avoids negative 0
+                    cofactor[l][k] = 0;
+                }
+                else{
+                    cofactor[l][k] = sign * det(minor, n-1);
+                }
+                sign *= -1;
+            }
+        }
+        // Transpose the matrix of cofactors and multiply by the recipricol of determinant
+        for (int i=0; i < n; i++){
+            for (int j=0; j < n; j++){
+                m2->matrix[j][i] = (1 / determinant) * cofactor[i][j];
+            }
+        }
+        
+        //invert negatives for odd columns
+        if (!(n % 2)){
+            for (int j=1; j < n; j++){
+                for (int i = 0; i < n; i++){
+                    if (j%2){
+                        m2->matrix[i][j] *= -1;
+                        //gets rid of -0.0 for some reason there's a negative 0???
+                        if (m2->matrix[i][j] == 0){
+                            m2->matrix[i][j] += 1;
+                            m2->matrix[i][j] -= 1;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+    
 }
